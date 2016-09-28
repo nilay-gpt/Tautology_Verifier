@@ -9,7 +9,7 @@ Steps to run:
     - python tautology_verifier.py
 
 sample input:
-  - "(!A | (A & A)), (!a | (b & !a)), (!a | a), ((a & (!b | b)) | (!a & (!b | b)))"
+  - "(!A | (A & A)), (!a | (b & !a))"
  
 output: 
   - **True**
