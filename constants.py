@@ -1,7 +1,7 @@
 
 class Constants(object):
     OPERATORS = ('&', '|', '!', '(', ')')
-    PRECEDENCE = {'!': 3, '&': 2, '|': 2, '(': 1}
+    PRECEDENCE = {'!': 3, '&': 2, '|': 2, '(': 1, ')': 1}
     AND = "&"
     OR = "|"
     NOT = "!"

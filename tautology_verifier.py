@@ -3,8 +3,8 @@ from tautology import PropositionStatement
 
 if __name__ == '__main__':
     """
-        i/p example:
-        "(!a | (a & a)), (!a | (b & !a)), (!a | a), ((a & (!b | b)) | (!a & (!b | b)))"
+    i/p example:
+    "(!a | (a & a)), (!a | (b & !a)), (!a | a), ((a & (!b | b)) | (!a & (!b | b)))"
     """
     print "Enter the comma seperated boolean expr:"
     try:

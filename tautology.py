@@ -6,43 +6,40 @@ from constants import Constants
 class PropositionStatement(object):
     def __init__(self, statement):
         """
-        This creates a proposition statement object
+        This creates a statement object
         Args:
-        statement - this has to be a valid infix statement no validation is
-        done
+        statement- expression and no validation is done in expresion is valid or not.
         """
         self.statement = statement
 
-    def getVariableMap(self, statement):
-        variableMap = dict()
-        uniqueVaraibles = True
-        for e in statement:
-            if is_operand(e):
-                if e in variableMap:
-                    uniqueVaraibles = False
+    def get_variable_map(self, statement):
+        variable_map = dict()
+        unique_varaibles = True
+        for char in statement:
+            if is_operand(char):
+                if char in variable_map:
+                    unique_varaibles = False
                 else:
-                    variableMap[e] = 0
-        return (variableMap, uniqueVaraibles)
+                    variable_map[char] = 0
+        return (variable_map, unique_varaibles)
 
-    def evaluateExprTree(self, root, variableMap):
+    def evaluate_expression_tree(self, root, variable_map):
         """
         This function evaulates the expression using expression
-        tree
-        Some optimization over postfix evaluation using expression
         tree
         """
         if root:
             value = root.data
             if is_operand(value):
-                return variableMap[value]
-            left = self.evaluateExprTree(root.left, variableMap)
+                return variable_map[value]
+            left = self.evaluate_expression_tree(root.left, variable_map)
             if value == Constants.NOT:
                 return not left
             elif value == Constants.AND and not left:
                 return False
             elif value == Constants.OR and left:
                 return True
-            right = self.evaluateExprTree(root.right, variableMap)
+            right = self.evaluate_expression_tree(root.right, variable_map)
             if value == Constants.AND:
                 return left and right
             elif value == Constants.OR:
@@ -52,24 +49,19 @@ class PropositionStatement(object):
 
     def is_tautology(self):
         """
-        Determines whether a statement given is a tuatology or not
-
         Returns:
         This function returns whether a given statement is tautology or not
+        Boolean: True/False
         """
-        (variableMap, uniqueVaraibles) = self.getVariableMap(self.statement)
-        # optimization step is that if all are unique variables, it won't be tautology
-        if uniqueVaraibles:
-            return False
-        numVariables = len(variableMap)
+        (variable_map, unique_varaibles) = self.get_variable_map(self.statement)
         postfix = infix_to_postfix(self.statement)
         root = postfix_to_expression_tree(postfix)
 
-        for i in range(pow(2, numVariables)):
-            for e in enumerate(variableMap):
-                offset = e[0]
-                key = e[1]
-                variableMap[key] = (i & (1 << offset)) >> offset
-            if not self.evaluateExprTree(root, variableMap):
+        for value in range(pow(2, len(variable_map))):
+            for element in enumerate(variable_map):
+                offset = element[0]
+                key = element[1]
+                variable_map[key] = (value & (1 << offset)) >> offset
+            if not self.evaluate_expression_tree(root, variable_map):
                 return False
         return True
